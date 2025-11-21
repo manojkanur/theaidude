@@ -634,16 +634,25 @@ footer {
   .nav-links {
     display: none;
     /* Hidden by default on mobile */
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    /* Fixed to cover screen or drop down properly */
+    top: 70px;
+    /* Height of navbar approximately */
     left: 0;
     width: 100%;
-    background: rgba(5, 5, 5, 0.95);
-    backdrop-filter: blur(10px);
+    height: calc(100vh - 70px);
+    /* Full height minus navbar */
+    background: rgba(5, 5, 5, 0.98);
+    /* Higher opacity */
+    backdrop-filter: blur(15px);
     flex-direction: column;
+    justify-content: center;
+    /* Center items vertically */
     padding: 2rem;
     border-bottom: 1px solid var(--glass-border);
     text-align: center;
+    z-index: 999;
+    overflow-y: auto;
   }
 
   .nav-links.active {
@@ -669,6 +678,16 @@ footer {
   .hero p {
     font-size: 1rem;
     padding: 0 1rem;
+  }
+
+  /* Fix Home Buttons Spacing */
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
   }
 
   .hero-stats {
@@ -704,5 +723,20 @@ footer {
 
   .program-banner h3 {
     font-size: 1.5rem;
+  }
+
+  /* Fix Social Icons Shape */
+  .social-btn {
+    flex-shrink: 0;
+    /* Prevent shrinking */
+    width: 50px;
+    /* Slightly smaller on mobile */
+    height: 50px;
+  }
+
+  .social-links {
+    flex-wrap: wrap;
+    /* Allow wrapping if needed */
+    gap: 1rem;
   }
 }

@@ -120,4 +120,28 @@ if (slides.length > 0) {
     clearInterval(autoPlay);
     autoPlay = setInterval(nextSlide, slideInterval);
   }
+
+  // Touch Support for Mobile Swipe
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const carouselContainer = document.querySelector('.carousel-container');
+
+  carouselContainer.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  carouselContainer.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+    resetInterval();
+  }, { passive: true });
+
+  function handleSwipe() {
+    if (touchEndX < touchStartX - 50) {
+      nextSlide(); // Swipe Left -> Next
+    }
+    if (touchEndX > touchStartX + 50) {
+      prevSlide(); // Swipe Right -> Prev
+    }
+  }
 }
