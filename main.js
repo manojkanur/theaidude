@@ -46,3 +46,78 @@ document.querySelectorAll('.video-facade').forEach(facade => {
     window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
   });
 });
+
+// Mobile Menu Toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+if (menuToggle) {
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    // Change icon
+    const icon = menuToggle.querySelector('i');
+    if (navLinks.classList.contains('active')) {
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
+    } else {
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    }
+  });
+}
+
+// Close mobile menu when a link is clicked
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('active');
+    const icon = menuToggle.querySelector('i');
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+  });
+});
+
+// Carousel Logic
+const slides = document.querySelectorAll('.carousel-slide');
+const nextBtn = document.querySelector('.carousel-btn.next');
+const prevBtn = document.querySelector('.carousel-btn.prev');
+let currentSlide = 0;
+const slideInterval = 5000; // 5 seconds
+
+function showSlide(index) {
+  slides.forEach(slide => slide.classList.remove('active'));
+
+  if (index >= slides.length) currentSlide = 0;
+  else if (index < 0) currentSlide = slides.length - 1;
+  else currentSlide = index;
+
+  slides[currentSlide].classList.add('active');
+}
+
+function nextSlide() {
+  showSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+  showSlide(currentSlide - 1);
+}
+
+if (slides.length > 0) {
+  // Event Listeners
+  nextBtn.addEventListener('click', () => {
+    nextSlide();
+    resetInterval();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prevSlide();
+    resetInterval();
+  });
+
+  // Auto Play
+  let autoPlay = setInterval(nextSlide, slideInterval);
+
+  function resetInterval() {
+    clearInterval(autoPlay);
+    autoPlay = setInterval(nextSlide, slideInterval);
+  }
+}
