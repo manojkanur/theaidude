@@ -501,7 +501,9 @@ footer {
   100% {
     transform: translateX(-50%);
   }
-}/* Mobile Menu Toggle */
+}
+
+/* Mobile Menu Toggle */
 .menu-toggle {
   display: none;
   font-size: 1.5rem;
@@ -514,7 +516,8 @@ footer {
   position: relative;
   width: 100%;
   max-width: 800px;
-  height: 450px; /* Fixed height for consistency */
+  height: 450px;
+  /* Fixed height for consistency */
   margin: 0 auto;
   border-radius: 20px;
   overflow: hidden;
@@ -603,7 +606,9 @@ footer {
   z-index: 0;
 }
 
-.program-banner h3, .program-banner p, .program-banner a {
+.program-banner h3,
+.program-banner p,
+.program-banner a {
   position: relative;
   z-index: 1;
 }
@@ -627,7 +632,8 @@ footer {
   }
 
   .nav-links {
-    display: none; /* Hidden by default on mobile */
+    display: none;
+    /* Hidden by default on mobile */
     position: absolute;
     top: 100%;
     left: 0;
@@ -641,23 +647,62 @@ footer {
   }
 
   .nav-links.active {
-    display: flex; /* Show when active */
+    display: flex;
+    /* Show when active */
+  }
+
+  .hero {
+    height: auto;
+    /* Allow content to dictate height on mobile */
+    padding-top: 140px;
+    /* Push content down below fixed navbar */
+    padding-bottom: 4rem;
+    min-height: 100vh;
   }
 
   .hero h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
+    /* Reduce font size */
+    margin-bottom: 1rem;
   }
-  
+
+  .hero p {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
   .hero-stats {
-    flex-direction: column;
-    gap: 2rem;
+    flex-direction: row;
+    /* Keep side by side if possible, or wrap */
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .stat-item {
+    flex: 1 1 100px;
+    /* Allow stats to shrink/grow */
   }
 
   .about-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .carousel-container {
-    height: 300px; /* Smaller height for mobile */
+    height: 250px;
+    /* Smaller height for mobile */
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .program-banner {
+    padding: 1.5rem;
+  }
+
+  .program-banner h3 {
+    font-size: 1.5rem;
   }
 }
