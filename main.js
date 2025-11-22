@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Carousel Logic
+  // Carousel Logic - Robust Implementation
   const slides = document.querySelectorAll('.carousel-slide');
   const nextBtn = document.querySelector('.carousel-btn.next');
   const prevBtn = document.querySelector('.carousel-btn.prev');
@@ -90,24 +90,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const slideInterval = 5000;
   let autoPlay;
 
+  console.log('Carousel Init: Found slides:', slides.length);
+
   function showSlide(index) {
-    // Hide all slides
+    console.log('Showing slide:', index);
+
+    // Hide all slides first
     slides.forEach(slide => {
       slide.classList.remove('active');
-      slide.style.opacity = '0'; // Force opacity change
-      slide.style.zIndex = '0';
+      slide.style.display = 'none'; // Explicitly hide
     });
 
-    // Calculate index
+    // Calculate valid index
     if (index >= slides.length) currentSlide = 0;
     else if (index < 0) currentSlide = slides.length - 1;
     else currentSlide = index;
 
-    // Show current slide
+    // Show active slide
     const activeSlide = slides[currentSlide];
-    activeSlide.classList.add('active');
-    activeSlide.style.opacity = '1';
-    activeSlide.style.zIndex = '1';
+    if (activeSlide) {
+      activeSlide.classList.add('active');
+      activeSlide.style.display = 'flex'; // Explicitly show
+    }
   }
 
   function nextSlide() {
@@ -129,24 +133,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (slides.length > 0) {
-    // Initial start
-    showSlide(0); // Ensure first slide is shown
+    // Initial State
+    showSlide(0);
     startAutoPlay();
 
+    // Event Listeners
     if (nextBtn) {
-      nextBtn.onclick = (e) => { // Use onclick for better reliability
+      nextBtn.onclick = (e) => {
         e.preventDefault();
+        e.stopPropagation(); // Stop bubbling
+        console.log('Next clicked');
         nextSlide();
         resetInterval();
       };
+    } else {
+      console.error('Next button not found');
     }
 
     if (prevBtn) {
       prevBtn.onclick = (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        console.log('Prev clicked');
         prevSlide();
         resetInterval();
       };
+    } else {
+      console.error('Prev button not found');
     }
 
     // Touch Support
@@ -173,5 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         prevSlide();
       }
     }
+  } else {
+    console.error('No slides found');
   }
 });
