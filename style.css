@@ -531,29 +531,21 @@ footer {
   left: 0;
   width: 100%;
   height: 100%;
-  display: none;
-  /* Hidden by default */
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: #000;
+  pointer-events: none;
 }
 
 .carousel-slide.active {
-  display: flex;
-  /* Shown when active */
+  opacity: 1;
   z-index: 1;
-  animation: fadeIn 0.5s ease-in-out;
+  pointer-events: auto;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
 
 .carousel-slide img {
   width: 100%;
