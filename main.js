@@ -1,15 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
+const initApp = () => {
+  console.log('App Initializing...');
+
   // Navbar Scroll Effect
   window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
+    if (navbar) {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
     }
   });
 
-  // Intersection Observer for Fade-in Animation
+  // Intersection Observer
   const observerOptions = {
     root: null,
     rootMargin: '0px',
@@ -29,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(element);
   });
 
-  // Smooth Scrolling for Navigation Links
+  // Smooth Scrolling
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
@@ -43,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Video Facade Handler
+  // Video Facade
   document.querySelectorAll('.video-facade').forEach(facade => {
     facade.addEventListener('click', function () {
       const videoId = this.getAttribute('data-video-id');
@@ -51,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Mobile Menu Toggle
+  // Mobile Menu
   const menuToggle = document.querySelector('.menu-toggle');
   const navLinks = document.querySelector('.nav-links');
 
@@ -68,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close mobile menu when a link is clicked
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('active');
@@ -81,36 +84,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Carousel Logic - Robust Implementation
+  // Carousel Logic - Simplified & Robust
   const slides = document.querySelectorAll('.carousel-slide');
   const nextBtn = document.querySelector('.carousel-btn.next');
   const prevBtn = document.querySelector('.carousel-btn.prev');
   const carouselContainer = document.querySelector('.carousel-container');
   let currentSlide = 0;
-  const slideInterval = 5000;
+  const slideInterval = 3000; // Faster interval for testing
   let autoPlay;
 
   console.log('Carousel Init: Found slides:', slides.length);
 
   function showSlide(index) {
-    console.log('Showing slide:', index);
+    // Wrap index
+    if (index >= slides.length) index = 0;
+    if (index < 0) index = slides.length - 1;
 
-    // Hide all slides first
+    currentSlide = index;
+    console.log('Showing slide:', currentSlide);
+
+    // Hide all
     slides.forEach(slide => {
       slide.classList.remove('active');
-      slide.style.display = 'none'; // Explicitly hide
+      slide.style.display = 'none';
     });
 
-    // Calculate valid index
-    if (index >= slides.length) currentSlide = 0;
-    else if (index < 0) currentSlide = slides.length - 1;
-    else currentSlide = index;
-
-    // Show active slide
-    const activeSlide = slides[currentSlide];
-    if (activeSlide) {
-      activeSlide.classList.add('active');
-      activeSlide.style.display = 'flex'; // Explicitly show
+    // Show active
+    if (slides[currentSlide]) {
+      slides[currentSlide].classList.add('active');
+      slides[currentSlide].style.display = 'flex';
     }
   }
 
@@ -133,33 +135,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (slides.length > 0) {
-    // Initial State
+    // Force initial state
     showSlide(0);
     startAutoPlay();
 
-    // Event Listeners
     if (nextBtn) {
       nextBtn.onclick = (e) => {
         e.preventDefault();
-        e.stopPropagation(); // Stop bubbling
-        console.log('Next clicked');
+        e.stopPropagation();
         nextSlide();
         resetInterval();
       };
-    } else {
-      console.error('Next button not found');
     }
 
     if (prevBtn) {
       prevBtn.onclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Prev clicked');
         prevSlide();
         resetInterval();
       };
-    } else {
-      console.error('Prev button not found');
     }
 
     // Touch Support
@@ -173,20 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       carouselContainer.addEventListener('touchend', e => {
         touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
+        if (touchEndX < touchStartX - 50) nextSlide();
+        if (touchEndX > touchStartX + 50) prevSlide();
         resetInterval();
       }, { passive: true });
     }
-
-    function handleSwipe() {
-      if (touchEndX < touchStartX - 50) {
-        nextSlide();
-      }
-      if (touchEndX > touchStartX + 50) {
-        prevSlide();
-      }
-    }
-  } else {
-    console.error('No slides found');
   }
-});
+};
+
+// Robust Initialization
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
