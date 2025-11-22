@@ -87,17 +87,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.querySelector('.carousel-btn.prev');
   const carouselContainer = document.querySelector('.carousel-container');
   let currentSlide = 0;
-  const slideInterval = 5000; // 5 seconds
+  const slideInterval = 5000;
   let autoPlay;
 
   function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove('active'));
+    // Hide all slides
+    slides.forEach(slide => {
+      slide.classList.remove('active');
+      slide.style.opacity = '0'; // Force opacity change
+      slide.style.zIndex = '0';
+    });
 
+    // Calculate index
     if (index >= slides.length) currentSlide = 0;
     else if (index < 0) currentSlide = slides.length - 1;
     else currentSlide = index;
 
-    slides[currentSlide].classList.add('active');
+    // Show current slide
+    const activeSlide = slides[currentSlide];
+    activeSlide.classList.add('active');
+    activeSlide.style.opacity = '1';
+    activeSlide.style.zIndex = '1';
   }
 
   function nextSlide() {
@@ -109,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function startAutoPlay() {
-    clearInterval(autoPlay);
+    if (autoPlay) clearInterval(autoPlay);
     autoPlay = setInterval(nextSlide, slideInterval);
   }
 
@@ -120,23 +130,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (slides.length > 0) {
     // Initial start
+    showSlide(0); // Ensure first slide is shown
     startAutoPlay();
 
     if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
+      nextBtn.onclick = (e) => { // Use onclick for better reliability
+        e.preventDefault();
         nextSlide();
         resetInterval();
-      });
+      };
     }
 
     if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
+      prevBtn.onclick = (e) => {
+        e.preventDefault();
         prevSlide();
         resetInterval();
-      });
+      };
     }
 
-    // Touch Support for Mobile Swipe
+    // Touch Support
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -154,10 +167,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleSwipe() {
       if (touchEndX < touchStartX - 50) {
-        nextSlide(); // Swipe Left -> Next
+        nextSlide();
       }
       if (touchEndX > touchStartX + 50) {
-        prevSlide(); // Swipe Right -> Prev
+        prevSlide();
       }
     }
   }

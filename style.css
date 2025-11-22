@@ -561,7 +561,8 @@ footer {
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 2;
+  z-index: 10;
+  /* Increased z-index to ensure clickability */
   transition: var(--transition);
   display: flex;
   align-items: center;
